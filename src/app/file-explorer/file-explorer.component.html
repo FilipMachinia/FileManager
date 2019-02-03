@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg  bg-dark">
+  <button type="button" class="btn btn-outline-light m-1" (click)="goBack()">Back</button>
+  <button type="button" class="btn btn-outline-light m-1" (click)="test()">Start</button>
+  <p class="whiteTxt m-1 text-center">{{path}}</p>
+</nav>
+
+<form id="searchForm" class="form-inline">
+  <input #searchInput class="form-control mr-sm-2" type="search" (input)="searchFiles(searchInput.value)"
+         placeholder="Search..." aria-label="Search">
+</form>
+
+<div class="m-2">
+  <div class="folder d-inline-block m-2" *ngFor="let entry of filteredResponse" (click)="navigate(entry)">
+    <p *ngIf="entry.type == 'FOLDER'; else file" class="fileIcon far fa-5x fa-folder"></p>
+
+    <ng-template #file>
+      <p class="far fa-5x fa-file"></p>
+    </ng-template>
+
+    <p class="fileDsc">{{entry.name}}</p>
+  </div>
+</div>
+
