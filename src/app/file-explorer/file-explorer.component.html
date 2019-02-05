@@ -1,6 +1,5 @@
 <nav class="navbar navbar-expand-lg  bg-dark">
   <button type="button" class="btn btn-outline-light m-1" (click)="goBack()">Back</button>
-  <button type="button" class="btn btn-outline-light m-1" (click)="test()">Start</button>
   <p class="whiteTxt m-1 text-center">{{path}}</p>
 </nav>
 
@@ -11,11 +10,22 @@
 
 <div class="m-2">
   <div class="folder d-inline-block m-2" *ngFor="let entry of filteredResponse" (click)="navigate(entry)">
-    <p *ngIf="entry.type == 'FOLDER'; else file" class="fileIcon far fa-5x fa-folder"></p>
+    <div [ngSwitch]="entry.type">
+      <p *ngSwitchCase="'FOLDER'" class="fileIcon far fa-5x fa-folder"></p>
+    </div>
 
-    <ng-template #file>
-      <p class="far fa-5x fa-file"></p>
-    </ng-template>
+    <div *ngIf="entry.type =='FILE'" [ngSwitch]="entry.fileType">
+      <p *ngSwitchCase="'PDF'" class="fileIcon far fa-5x fa-file-pdf"></p>
+      <p *ngSwitchCase="'JPG'" class="far fa-5x fa-file-image"></p>
+      <p *ngSwitchCase="'PNG'" class="far fa-5x fa-file-image"></p>
+      <p *ngSwitchCase="'ZIP'" class="far fa-5x fa-file-archive"></p>
+      <p *ngSwitchCase="'WAV'" class="far fa-5x fa-file-audio"></p>
+      <p *ngSwitchCase="'MOV'" class="far fa-5x fa-file-video"></p>
+      <p *ngSwitchCase="'DOC'" class="far fa-5x fa-file-word"></p>
+      <p *ngSwitchCase="'INI'" class="far fa-5x fa-file-code"></p>
+      <p *ngSwitchCase="'GO'" class="far fa-5x fa-file-code"></p>
+      <p *ngSwitchDefault class="far fa-5x fa-file"></p>
+    </div>
 
     <p class="fileDsc">{{entry.name}}</p>
   </div>

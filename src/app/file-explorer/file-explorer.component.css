@@ -2,6 +2,14 @@
   width: 100px;
   height: 100px;
   cursor: pointer;
+  text-align: center;
+}
+.folder > div{
+  display: inline-block;
+}
+.folder:hover{
+  /*filter: brightness(50%);*/
+  background-color: rgba(173, 173, 173, 0.11);
 }
 .fileDsc{
   text-overflow: ellipsis;
