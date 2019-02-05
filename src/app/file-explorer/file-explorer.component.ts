@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {GetFilesService} from '../service/get-files.service';
 import {FileModel} from '../models/fileModel';
 
@@ -7,7 +7,7 @@ import {FileModel} from '../models/fileModel';
   templateUrl: './file-explorer.component.html',
   styleUrls: ['./file-explorer.component.css']
 })
-export class FileExplorerComponent implements OnInit {
+export class FileExplorerComponent implements OnInit, AfterViewInit {
   response: FileModel[] = [];
   filteredResponse: FileModel[] = [];
   parentFiles: FileModel[] = [];
@@ -22,8 +22,8 @@ export class FileExplorerComponent implements OnInit {
   ngOnInit() {
   }
 
-  test() {
-    this.getFilesService.getRoot(this.rootUrl).subscribe((res) => {
+  ngAfterViewInit(): void {
+    this.getFilesService.getRoot(this.rootUrl).subscribe(() => {
       this.response = this.response.concat(JSON.parse(this.getFilesService.getData()._body).data);
       this.filteredResponse = this.filteredResponse.concat(JSON.parse(this.getFilesService.getData()._body).data);
       console.log(this.response);
@@ -37,7 +37,7 @@ export class FileExplorerComponent implements OnInit {
       // this.parentFiles.length = 0;
       // this.parentFiles = this.response.slice();
       this.parentFiles = this.parentFiles.concat(this.response.slice());
-      this.getFilesService.getChildren(this.childrenUrl + entry.id + '/children', entry.id).subscribe((res) => {
+      this.getFilesService.getChildren(this.childrenUrl + entry.id + '/children', entry.id).subscribe(() => {
         this.response.length = 0;
         this.response = this.response.concat(JSON.parse(this.getFilesService.getData()._body).data);
         this.filteredResponse.length = 0;
@@ -70,4 +70,6 @@ export class FileExplorerComponent implements OnInit {
       item => item.name.toLowerCase().indexOf(input.toLowerCase()) > -1
     );
   }
+
+
 }
