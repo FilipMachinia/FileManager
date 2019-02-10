@@ -1,4 +1,5 @@
 # Filemanager
+![image](https://raw.githubusercontent.com/FilipMachinia/FileManager/master/src/assets/screen.PNG)
 
 This project runs on Angular 7 CLI with Bootstrap and Font Awesome.
 
