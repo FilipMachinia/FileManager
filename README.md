@@ -8,13 +8,15 @@ This project runs on Angular 7 CLI with Bootstrap and Font Awesome.
 * On the front end run `npm install`
 * Install CORS addon for your browser and enable it.
 * Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
+* Run `ng build --prod` for production build.
 
 ## Current features
 * Navigation between files
 * Displaying current path
 * Filtering
+* Adding new files/folders (not saved on the backend)
+* Hide file extension
+* Context menu (with mock options)
 
 ## TODO
-* Fix going back x2
-* Context menu
-* Hide file extension
+

@@ -8,13 +8,13 @@ import {FileModel} from '../models/fileModel';
   styleUrls: ['./file-explorer.component.css']
 })
 export class FileExplorerComponent implements OnInit, AfterViewInit {
-  response: FileModel[] = [];
-  filteredResponse: FileModel[] = [];
-  parentFiles: FileModel[] = [];
+  currentFiles: FileModel[][] = [];
+  filteredFiles: FileModel[][] = [];
+  parentFiles: FileModel[][] = [];
 
   path: string = 'Folders';
-  rootUrl = 'http://localhost:8080/api/top/children';
-  childrenUrl = 'http://localhost:8080/api/item/'; //'http://localhost:8080/api/item/' + id + '/children'
+  rootUrl: string = 'http://localhost:8080/api/top/children';
+  childrenUrl: string = 'http://localhost:8080/api/item/'; //'http://localhost:8080/api/item/' + id + '/children'
 
   constructor(private getFilesService: GetFilesService) {
   }
@@ -24,52 +24,75 @@ export class FileExplorerComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.getFilesService.getRoot(this.rootUrl).subscribe(() => {
-      this.response = this.response.concat(JSON.parse(this.getFilesService.getData()._body).data);
-      this.filteredResponse = this.filteredResponse.concat(JSON.parse(this.getFilesService.getData()._body).data);
-      console.log(this.response);
+      this.currentFiles.push(JSON.parse(this.getFilesService.getData()._body).data);
+      this.filteredFiles.push(JSON.parse(this.getFilesService.getData()._body).data);
     });
   }
 
   navigate(entry) {
     if (entry.type == 'FOLDER') {
-      console.log(entry.id);
+      (<HTMLInputElement> document.getElementById('goUp')).disabled = false;
+      this.parentFiles = this.parentFiles.concat(this.currentFiles);
 
-      // this.parentFiles.length = 0;
-      // this.parentFiles = this.response.slice();
-      this.parentFiles = this.parentFiles.concat(this.response.slice());
       this.getFilesService.getChildren(this.childrenUrl + entry.id + '/children', entry.id).subscribe(() => {
-        this.response.length = 0;
-        this.response = this.response.concat(JSON.parse(this.getFilesService.getData()._body).data);
-        this.filteredResponse.length = 0;
-        this.filteredResponse = this.filteredResponse.concat(JSON.parse(this.getFilesService.getData()._body).data);
+        this.currentFiles.length = 0;
+        this.currentFiles.push(JSON.parse(this.getFilesService.getData()._body).data);
+        this.filteredFiles.length = 0;
+        this.filteredFiles.push(JSON.parse(this.getFilesService.getData()._body).data);
         this.path = this.path + '/' + entry.name;
-        console.log('NAVIGATE');
-        console.log(this.parentFiles);
+        console.log(this.filteredFiles);
+
       });
     }
   }
 
-  goBack() {
-    console.log('BACK');
-    // console.log(this.response);
-    this.response.length = 0;
-    this.filteredResponse.length = 0;
-    this.response = this.parentFiles.slice();
-    this.filteredResponse = this.parentFiles.slice();
-    console.log(this.parentFiles);
-    this.parentFiles.length = 0;
-    // this.parentFiles.pop();
-    this.path = this.path.substring(0, this.path.indexOf('/'));
+  goUp() {
+    this.currentFiles.length = 0;
+    this.filteredFiles.length = 0;
+    this.currentFiles.push(this.parentFiles[this.parentFiles.length - 1]);
+    this.filteredFiles.push(this.parentFiles[this.parentFiles.length - 1]);
+
+    this.parentFiles.pop();
+    this.path = this.path.substring(0, this.path.lastIndexOf('/'));
+
+    if (this.path == 'Folders') {
+      (<HTMLInputElement> document.getElementById('goUp')).disabled = true;
+    }
   }
 
   searchFiles(input: string) {
     if (!input) {
-      this.filteredResponse = Object.assign([], this.response);
+      this.filteredFiles = Object.assign([], this.currentFiles);
     }
-    this.filteredResponse = Object.assign([], this.response).filter(
-      item => item.name.toLowerCase().indexOf(input.toLowerCase()) > -1
+
+    this.filteredFiles[0] = this.currentFiles[0].filter(entry =>
+      entry.name.toLowerCase().indexOf(input.toLowerCase()) > -1
     );
   }
 
+  openMenu($event: MouseEvent) {
+    event.preventDefault();
+    document.getElementById('ctxmenu').className = 'show';
+    document.getElementById('ctxmenu').style.top = $event.clientY + 'px';
+    document.getElementById('ctxmenu').style.left = $event.clientX + 'px';
 
+    window.event.returnValue = false;
+  }
+
+  addNewFile(type: string) {
+    let temp: FileModel = {name: 'test', id: '1', type: type, parentId: ''};
+    this.filteredFiles[0].push(temp);
+  }
+
+  removeFileExtension() {
+    this.filteredFiles[0].forEach(entry => {
+      if (entry.name.includes('.')) {
+        entry.name = entry.name.substring(0, entry.name.lastIndexOf('.'));
+      }
+    });
+  }
+
+  hideCtxMenu() {
+    document.getElementById('ctxmenu').className = 'hide';
+  }
 }

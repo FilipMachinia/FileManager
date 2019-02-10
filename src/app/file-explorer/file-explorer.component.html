@@ -1,5 +1,8 @@
-<nav class="navbar navbar-expand-lg  bg-dark">
-  <button type="button" class="btn btn-outline-light m-1" (click)="goBack()">Back</button>
+<nav class="navbar navbar-expand-lg bg-dark">
+  <button id="goUp" type="button" class="btn btn-outline-light m-1 " (click)="goUp()" disabled>Go up</button>
+  <button id="newFile" type="button" class="btn btn-outline-light ml-3" (click)="addNewFile('FILE')">New File</button>
+  <button id="newFolder" type="button" class="btn btn-outline-light ml-2" (click)="addNewFile('FOLDER')">New Folder</button>
+  <button type="button" class="btn btn-outline-light ml-2 mr-3" (click)="removeFileExtension()">Hide file extension</button>
   <p class="whiteTxt m-1 text-center">{{path}}</p>
 </nav>
 
@@ -9,7 +12,8 @@
 </form>
 
 <div class="m-2">
-  <div class="folder d-inline-block m-2" *ngFor="let entry of filteredResponse" (click)="navigate(entry)">
+  <div id="fileCont" class="folder d-inline-block m-2" *ngFor="let entry of filteredFiles[0]" (click)="navigate(entry)" (contextmenu)="openMenu($event)" >
+
     <div [ngSwitch]="entry.type">
       <p *ngSwitchCase="'FOLDER'" class="fileIcon far fa-5x fa-folder"></p>
     </div>
@@ -29,5 +33,12 @@
 
     <p class="fileDsc">{{entry.name}}</p>
   </div>
+
+  <div class="hide" id="ctxmenu" (mouseleave)="hideCtxMenu()">
+    <div class="p-3 ctxItem" (click)="hideCtxMenu()">Testing1</div>
+    <div class="p-3 ctxItem" (click)="hideCtxMenu()">Testing2</div>
+    <div class="p-3 ctxItem" (click)="hideCtxMenu()">Testing3</div>
+  </div>
+
 </div>
 

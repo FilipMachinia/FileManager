@@ -7,8 +7,7 @@
 .folder > div{
   display: inline-block;
 }
-.folder:hover{
-  /*filter: brightness(50%);*/
+.folder:hover, .ctxItem:hover{
   background-color: rgba(173, 173, 173, 0.11);
 }
 .fileDsc{
@@ -26,9 +25,7 @@
   color: white;
   font-size: 18px;
 }
-#searchInput{
 
-}
 #searchForm {
   float: right;
   align-items: center;
@@ -36,3 +33,34 @@
   z-index: 100;
   position: relative;
 }
+
+.show {
+  z-index:1000;
+  position: absolute;
+  background-color: #fefefe;
+  border: 1px solid #99989a;
+  padding: 2px;
+  display: block;
+  margin: 0;
+  min-width: 150px;
+  /*min-height: 200px;*/
+  font-size: 14px;
+  text-align: center;
+}
+
+a{
+  text-decoration: none;
+}
+
+.ctxItem{
+  cursor: pointer;
+
+}
+
+.hide {
+  display: none;
+}
+
+.show li{ list-style: none; }
+.show a { border: 0 !important; text-decoration: none; }
+.show a:hover { text-decoration: underline !important; }
