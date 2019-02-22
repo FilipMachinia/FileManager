@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {GetFilesService} from '../service/get-files.service';
 import {FileModel} from '../models/fileModel';
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-file-explorer',
@@ -11,6 +12,7 @@ export class FileExplorerComponent implements OnInit, AfterViewInit {
   currentFiles: FileModel[][] = [];
   filteredFiles: FileModel[][] = [];
   parentFiles: FileModel[][] = [];
+  clickedFile: FileModel;
 
   path: string = 'Folders';
   rootUrl: string = 'http://localhost:8080/api/top/children';
@@ -70,7 +72,8 @@ export class FileExplorerComponent implements OnInit, AfterViewInit {
     );
   }
 
-  openMenu($event: MouseEvent) {
+  openMenu($event: MouseEvent, entry) {
+    this.clickedFile = entry;
     event.preventDefault();
     document.getElementById('ctxmenu').className = 'show';
     document.getElementById('ctxmenu').style.top = $event.clientY + 'px';
@@ -94,5 +97,21 @@ export class FileExplorerComponent implements OnInit, AfterViewInit {
 
   hideCtxMenu() {
     document.getElementById('ctxmenu').className = 'hide';
+  }
+
+  deleteFile() {
+    this.filteredFiles[0] = this.filteredFiles[0].filter( item => item.id != this.clickedFile.id);
+    document.getElementById('ctxmenu').className = 'hide';
+
+  }
+
+  renameFile() {
+    let newName = ((<HTMLInputElement>document.getElementById("newName")).value);
+
+    let itemIndex = this.filteredFiles[0].findIndex(x => x.id == this.clickedFile.id);
+    this.filteredFiles[0][itemIndex].name = newName;
+
+    document.getElementById('ctxmenu').className = 'hide';
+    $('#renameModal').modal('hide');
   }
 }

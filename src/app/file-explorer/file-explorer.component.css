@@ -35,7 +35,7 @@
 }
 
 .show {
-  z-index:1000;
+  /*z-index:1000;*/
   position: absolute;
   background-color: #fefefe;
   border: 1px solid #99989a;
@@ -64,3 +64,7 @@ a{
 .show li{ list-style: none; }
 .show a { border: 0 !important; text-decoration: none; }
 .show a:hover { text-decoration: underline !important; }
+
+.modal-backdrop{
+  z-index: 500 !important;
+}

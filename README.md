@@ -17,7 +17,7 @@ This project runs on Angular 7 CLI with Bootstrap and Font Awesome.
 * Filtering
 * Adding new files/folders (not saved on the backend)
 * Hide file extension
-* Context menu (with mock options)
+* Context menu (rename, delete)
 
 ## TODO
 
