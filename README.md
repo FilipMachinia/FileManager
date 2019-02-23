@@ -18,6 +18,7 @@ This project runs on Angular 7 CLI with Bootstrap and Font Awesome.
 * Adding new files/folders (not saved on the backend)
 * Hide file extension
 * Context menu (rename, delete)
+* Offline popup (turn off your wifi to see it)
 
 ## TODO
 

@@ -25,9 +25,12 @@
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/@fortawesome/fontawesome-free/css/all.css",
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/offline-js/themes/offline-theme-chrome.css",
+              "./node_modules/offline-js/themes/offline-language-english.css"
             ],
             "scripts": [
+              "./node_modules/offline-js/offline.min.js",
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.js"
             ],
