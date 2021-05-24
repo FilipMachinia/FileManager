@@ -3,6 +3,6 @@ export class FileModel {
   type: string;
   id: string;
   parentId: string;
-  fileType? : string;
-  numberOfChildren? : number;
+  fileType?: string;
+  numberOfChildren?: number;
 }

@@ -1,15 +1,17 @@
-# Filemanager
+# File manager
 ![image](https://raw.githubusercontent.com/FilipMachinia/FileManager/master/src/assets/screen.PNG)
 
-This project runs on Angular 7 CLI with Bootstrap and Font Awesome.
+Small file manager app. 
+
+This project runs on Angular 7 CLI with Bootstrap and Font Awesome. Included backend is Node.js.
 
 ## Setup
-* Run the server with `npm run hello_world`.
-
-* On the front end run `npm install`
-* Install CORS addon for your browser and enable it.
-* Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
-* Run `ng build --prod` for production build.
+* Install dependencies with `npm install --prefix backend` and `npm install`
+* Run the server with `npm start --prefix backend`
+* Run the front end with `npm start`
+[comment]: <> (* Install CORS addon for your browser and enable it)
+[comment]: <> (* Run `ng serve` for a dev server.)
+* Navigate to `http://localhost:4200/`
 
 ## Current features
 * Navigation between files

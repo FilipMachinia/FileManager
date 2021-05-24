@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-dark">
   <button id="goUp" type="button" class="btn btn-outline-light m-1 " (click)="goUp()" disabled>Go up</button>
-  <button id="newFile" type="button" class="btn btn-outline-light ml-3" (click)="addNewFile('FILE')">New File</button>
-  <button id="newFolder" type="button" class="btn btn-outline-light ml-2" (click)="addNewFile('FOLDER')">New Folder</button>
+  <button id="newFile" type="button" class="btn btn-outline-light ml-3" (click)="addNewFile('file')">New File</button>
+  <button id="newFolder" type="button" class="btn btn-outline-light ml-2" (click)="addNewFile('folder')">New Folder</button>
   <button type="button" class="btn btn-outline-light ml-2 mr-3" (click)="removeFileExtension()">Hide file extension</button>
   <p class="whiteTxt m-1 text-center">{{path}}</p>
 </nav>
@@ -12,13 +12,15 @@
 </form>
 
 <div class="m-2">
-  <div id="fileCont" class="folder d-inline-block m-2" *ngFor="let entry of filteredFiles[0]" (click)="navigate(entry)" (contextmenu)="openMenu($event, entry)" >
 
+
+  <div id="fileCont" class="folder d-inline-block m-2" *ngFor="let entry of filteredFiles" (click)="navigate(entry)" (contextmenu)="openMenu($event, entry)" >
+<!--    {{entry.name |json}}-->
     <div [ngSwitch]="entry.type">
-      <p *ngSwitchCase="'FOLDER'" class="fileIcon far fa-5x fa-folder"></p>
+      <p *ngSwitchCase="'folder'" class="fileIcon far fa-5x fa-folder"></p>
     </div>
 
-    <div *ngIf="entry.type =='FILE'" [ngSwitch]="entry.fileType">
+    <div *ngIf="entry.type =='file'" [ngSwitch]="entry.type">
       <p *ngSwitchCase="'PDF'" class="fileIcon far fa-5x fa-file-pdf"></p>
       <p *ngSwitchCase="'JPG'" class="far fa-5x fa-file-image"></p>
       <p *ngSwitchCase="'PNG'" class="far fa-5x fa-file-image"></p>
