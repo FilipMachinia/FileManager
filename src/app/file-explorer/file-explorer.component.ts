@@ -12,12 +12,13 @@ export class FileExplorerComponent implements OnInit, AfterViewInit {
   currentFiles: any = [];
   filteredFiles: any = [];
   allFiles: any = [];
-  parentFiles: FileModel[][] = [];
+  parentFiles: any = [];
   clickedFile: FileModel;
+  isTopFolder = true;
 
   path = '';
-  rootUrl = 'http://localhost:3000/getPlates';
-  childrenUrl = 'http://localhost:8080/api/item/'; // 'http://localhost:8080/api/item/' + id + '/children'
+  rootUrl = 'http://localhost:3000/getAllFiles';
+  // childrenUrl = 'http://localhost:8080/api/item/'; // 'http://localhost:8080/api/item/' + id + '/children'
 
   constructor(private getFilesService: GetFilesService) {
   }
@@ -35,36 +36,37 @@ export class FileExplorerComponent implements OnInit, AfterViewInit {
   }
 
   navigate(entry) {
-
     if (entry.type === 'folder') {
       (document.getElementById('goUp') as HTMLInputElement).disabled = false;
-      this.parentFiles = this.parentFiles.concat(this.currentFiles);
+      this.parentFiles.push([...this.currentFiles]);
+
+      this.currentFiles.length = 0;
       this.filteredFiles.length = 0;
+      this.currentFiles = [...entry.children];
       this.filteredFiles = [...entry.children];
+
       // this.getFilesService.getChildren(this.childrenUrl + entry.id + '/children', entry.id).subscribe(() => {
       //   this.currentFiles.length = 0;
       //   this.currentFiles.push(JSON.parse(this.getFilesService.getData()._body).data);
       //   this.filteredFiles.length = 0;
       //   this.filteredFiles.push(JSON.parse(this.getFilesService.getData()._body).data);
       this.path = this.path + '/' + entry.name;
-      //   console.log(this.filteredFiles);
-
-      // });
     }
   }
 
   goUp() {
     this.currentFiles.length = 0;
     this.filteredFiles.length = 0;
-    this.currentFiles.push(this.parentFiles[this.parentFiles.length - 1]);
-    this.filteredFiles.push(this.parentFiles[this.parentFiles.length - 1]);
-
+    this.currentFiles.push([...this.parentFiles[this.parentFiles.length - 1]]);
+    this.filteredFiles.push([...this.parentFiles[this.parentFiles.length - 1]]);
+    this.currentFiles = [].concat.apply([], this.currentFiles);
+    this.filteredFiles = [].concat.apply([], this.filteredFiles);
     this.parentFiles.pop();
+
     this.path = this.path.substring(0, this.path.lastIndexOf('/'));
 
-    if (this.path === 'Folders') {
-      (document.getElementById('goUp') as HTMLInputElement).disabled = true;
-    }
+    this.isTopFolder = ((this.path.match(/\//g) || []).length) <= 0; // check for '/' in current path
+    (document.getElementById('goUp') as HTMLInputElement).disabled = this.isTopFolder;
   }
 
   searchFiles(input: string) {
